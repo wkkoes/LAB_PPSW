@@ -1,0 +1,15 @@
+*.bak
+*.dep
+*.obj
+*.lst
+*.map
+*.crf
+*.o
+*.d
+*.axf
+*.hex
+*.htm
+*.lnp
+*.sct
+Objects/
+Listings/
