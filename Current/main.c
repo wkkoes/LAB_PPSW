@@ -3,7 +3,7 @@
 void Delay(void)
 {
 	int iLoopCounter;
-	for(iLoopCounter = 0; iLoopCounter < 1000; iLoopCounter++){}
+	for(iLoopCounter = 0; iLoopCounter < 1500149; iLoopCounter++){}
 }
 	
 	
