@@ -7,7 +7,7 @@
 #define BUT1_bm 0x0000000040
 #define BUT2_bm 0x0000000020
 #define BUT3_bm 0x0000000080
-enum ButtonState {RELEASED, PRESSED};
+enum KeyboardState {RELEASED, BUTTON_0, BUTTON_1, BUTTON_2, BUTTON_3};
 
 void Delay(int iDelayInMs)
 {
@@ -46,15 +46,27 @@ void LedOn(unsigned char ucLedIndeks)
 	}
 }	
 
-enum ButtonState ReadButton1(void)
+enum KeyboardState eKeyboardRead(void)
 {
 	if((IO0PIN & BUT0_bm) == 0)
 	{
-		return PRESSED;
+		return BUTTON_0;
+	}
+	else if ((IO0PIN & BUT1_bm) == 0)
+	{
+		return BUTTON_1;
+	}
+	else if ((IO0PIN & BUT2_bm) == 0)
+	{
+		return BUTTON_2;
+	}
+	else if ((IO0PIN & BUT3_bm) == 0)
+	{
+		return BUTTON_3;
 	}
 	else
 	{
-	return RELEASED;
+		return RELEASED;
 	}
 }
 
@@ -70,15 +82,25 @@ int main()
 	
 	while(1)
 	{
-		switch(ReadButton1())
+		switch(eKeyboardRead())
 		{
-			case PRESSED:
+			case BUTTON_0:
+				LedOn(0);
+				break;
+			case BUTTON_1:
 				LedOn(1);
 				break;
+			case BUTTON_2:
+				LedOn(2);
+				break;
+			case BUTTON_3:
+				LedOn(3);
+				break;
 			case RELEASED:
-				LedOn(0);
+				LedOn(4);
 				break;
 		}
 	}
 }
+			
 
