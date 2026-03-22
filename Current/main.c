@@ -14,12 +14,20 @@ void Delay(int iDelayInMs)
 
 int main()
 {
+	int iLedCounter;
+	unsigned int uiCurrentLed;
+	
   IO1DIR |= (LED0_bm | LED1_bm | LED2_bm | LED3_bm);
   
-	IO1SET = LED0_bm;
-	IO1SET = LED1_bm;
-	IO1SET = LED2_bm;
-	IO1SET = LED3_bm;
-	
-	while(1){}
+	while(1)
+	{
+		uiCurrentLed = LED0_bm;
+		for(iLedCounter = 0; iLedCounter < 4; iLedCounter++)
+		{
+			IO1CLR = (LED0_bm | LED1_bm | LED2_bm | LED3_bm);
+			IO1SET = uiCurrentLed;
+			Delay(250);
+			uiCurrentLed = uiCurrentLed <<1;
+	}
+}
 }
