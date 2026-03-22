@@ -3,6 +3,7 @@
 #define LED1_bm 0x00020000
 #define LED2_bm 0x00040000
 #define LED3_bm 0x00080000
+#define BUT0_bm 0x00000010
 
 void Delay(int iDelayInMs)
 {
@@ -41,19 +42,32 @@ void LedOn(unsigned char ucLedIndeks)
 	}
 }	
 
+int ReadButton1(void)
+{
+	if((IO0PIN & BUT0_bm) == 0)
+	{
+		return 1;
+	}
+	else
+	{
+	return 0;
+	}
+}
+	
 int main()
 {
-	unsigned char ucLedCounter;
-	
 	LedInit();
 	
 	while(1)
 	{
-		for(ucLedCounter = 0; ucLedCounter <4; ucLedCounter++)
+		if (ReadButton1() == 1)
 		{
-			LedOn(ucLedCounter);
-			Delay(250);
+			LedOn(1);
+		}
+		else
+		{
+			LedOn(0);
 		}
 	}
 }
-  
+
