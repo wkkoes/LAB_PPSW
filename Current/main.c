@@ -104,7 +104,6 @@ void LedStepRight(void)
 
 int main()
 {
-	int iLedCounter;
 	LedInit();
 	KeyboardInit();
 	
