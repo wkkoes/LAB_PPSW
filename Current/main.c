@@ -82,6 +82,12 @@ void StepLeft(void)
 	LedOn(uiLedIndex % 4);
 }
 
+void StepRight(void)
+{
+	uiLedIndex--;
+	LedOn(uiLedIndex % 4);
+}
+
 int main()
 {
 	LedInit();
@@ -89,7 +95,7 @@ int main()
 	while(1)
 	{
 		Delay(250);
-		StepLeft();
+		StepRight();
 	}
 }
 		
