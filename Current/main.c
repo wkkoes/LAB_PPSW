@@ -15,9 +15,9 @@ int main()
 	while(1)
 	{
 		IO1SET = 0x00010000;
-    Delay(1000);
+    Delay(50);
 		
 		IO1CLR = 0x00010000;
-    Delay(1000);
+    Delay(50);
     }
 }
