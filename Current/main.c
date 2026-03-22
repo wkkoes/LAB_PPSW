@@ -3,10 +3,10 @@
 #define LED1_bm 0x00020000
 #define LED2_bm 0x00040000
 #define LED3_bm 0x00080000
-#define BUT0_bm 0x0000000010
-#define BUT1_bm 0x0000000040
-#define BUT2_bm 0x0000000020
-#define BUT3_bm 0x0000000080
+#define BUT0_bm 0x00000010
+#define BUT1_bm 0x00000040
+#define BUT2_bm 0x00000020
+#define BUT3_bm 0x00000080
 enum KeyboardState {RELEASED, BUTTON_0, BUTTON_1, BUTTON_2, BUTTON_3};
 enum StepDirection {LEFT, RIGHT};
 
@@ -26,7 +26,7 @@ void LedInit(void)
 
 void LedOn(unsigned char ucLedIndeks)
 {
-	IO1CLR |= (LED0_bm | LED1_bm | LED2_bm | LED3_bm);
+	IO1CLR = (LED0_bm | LED1_bm | LED2_bm | LED3_bm);
 	
 	switch(ucLedIndeks)
 	{
