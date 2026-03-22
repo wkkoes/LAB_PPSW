@@ -12,12 +12,18 @@ void Delay(int iDelayInMs)
     for(iLoopCounter = 0; iLoopCounter < iDelayInMs; iLoopCounter++){}
 }
 
+void LedInit(void)
+{
+	IO1DIR |= (LED0_bm | LED1_bm | LED2_bm | LED3_bm);
+	IO1SET = LED0_bm;
+}
+
 int main()
 {
 	int iLedCounter;
 	unsigned int uiCurrentLed;
 	
-  IO1DIR |= (LED0_bm | LED1_bm | LED2_bm | LED3_bm);
+  LedInit();
   
 	while(1)
 	{
