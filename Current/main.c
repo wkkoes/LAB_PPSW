@@ -95,21 +95,28 @@ int main()
 {
 	int iLedCounter;
 	LedInit();
-
+	KeyboardInit();
+	
 	while(1)
 	{
-		for(iLedCounter = 0; iLedCounter < 9; iLedCounter++)
+		switch(eKeyboardRead())
 		{
-			Delay(250);
-			LedStep(RIGHT);
-		}
-		for(iLedCounter = 0; iLedCounter <9; iLedCounter++)
-		{
-			Delay(250);
-			LedStep(LEFT);
+			case BUTTON_1:
+				LedStep(RIGHT);
+				Delay(250);
+				break;
+			case BUTTON_2:
+				LedStep(LEFT);
+				Delay(250);
+				break;
+			case RELEASED:
+				break;
+			default:
+				break;
 		}
 	}
 }
+		
 		
 		
 
