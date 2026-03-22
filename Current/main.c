@@ -91,6 +91,17 @@ void LedStep(enum StepDirection eDirection)
 	LedOn(sucLedIndex % 4);
 }
 
+
+void LedStepLeft(void)
+{
+	LedStep(LEFT);
+}
+
+void LedStepRight(void)
+{
+	LedStep(RIGHT);
+}
+
 int main()
 {
 	int iLedCounter;
@@ -102,15 +113,18 @@ int main()
 		switch(eKeyboardRead())
 		{
 			case BUTTON_1:
-				LedStep(RIGHT);
+				LedStepRight();
 				Delay(250);
 				break;
+			
 			case BUTTON_2:
-				LedStep(LEFT);
+				LedStepLeft();
 				Delay(250);
 				break;
+			
 			case RELEASED:
 				break;
+			
 			default:
 				break;
 		}
