@@ -18,22 +18,42 @@ void LedInit(void)
 	IO1SET = LED0_bm;
 }
 
+void LedOn(unsigned char ucLedIndeks)
+{
+	IO1CLR |= (LED0_bm | LED1_bm | LED2_bm | LED3_bm);
+	
+	switch(ucLedIndeks)
+	{
+		case(0):
+			IO1SET = LED0_bm;
+			break;
+		case(1):
+			IO1SET = LED1_bm;
+			break;
+		case(2):
+			IO1SET = LED2_bm;
+			break;
+		case(3):
+			IO1SET = LED3_bm;
+			break;
+		default:
+			break;
+	}
+}	
+
 int main()
 {
-	int iLedCounter;
-	unsigned int uiCurrentLed;
+	unsigned char ucLedCounter;
 	
-  LedInit();
-  
+	LedInit();
+	
 	while(1)
 	{
-		uiCurrentLed = LED0_bm;
-		for(iLedCounter = 0; iLedCounter < 4; iLedCounter++)
+		for(ucLedCounter = 0; ucLedCounter <4; ucLedCounter++)
 		{
-			IO1CLR = (LED0_bm | LED1_bm | LED2_bm | LED3_bm);
-			IO1SET = uiCurrentLed;
+			LedOn(ucLedCounter);
 			Delay(250);
-			uiCurrentLed = uiCurrentLed <<1;
+		}
 	}
 }
-}
+  
