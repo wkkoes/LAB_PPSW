@@ -8,6 +8,7 @@
 #define BUT2_bm 0x0000000020
 #define BUT3_bm 0x0000000080
 enum KeyboardState {RELEASED, BUTTON_0, BUTTON_1, BUTTON_2, BUTTON_3};
+unsigned int uiLedIndex = 0;
 
 void Delay(int iDelayInMs)
 {
@@ -75,32 +76,21 @@ void KeyboardInit()
 	IO0DIR &= ~(BUT0_bm|BUT1_bm|BUT2_bm|BUT3_bm);
 }
 
+void StepLeft(void)
+{
+	uiLedIndex++;
+	LedOn(uiLedIndex % 4);
+}
+
 int main()
 {
 	LedInit();
-	KeyboardInit();
 	
 	while(1)
 	{
-		switch(eKeyboardRead())
-		{
-			case BUTTON_0:
-				LedOn(0);
-				break;
-			case BUTTON_1:
-				LedOn(1);
-				break;
-			case BUTTON_2:
-				LedOn(2);
-				break;
-			case BUTTON_3:
-				LedOn(3);
-				break;
-			case RELEASED:
-				LedOn(4);
-				break;
-		}
+		Delay(250);
+		StepLeft();
 	}
 }
-			
+		
 
