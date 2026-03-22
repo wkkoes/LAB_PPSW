@@ -4,6 +4,7 @@
 #define LED2_bm 0x00040000
 #define LED3_bm 0x00080000
 #define BUT0_bm 0x00000010
+enum ButtonState {RELEASED, PRESSED};
 
 void Delay(int iDelayInMs)
 {
@@ -42,15 +43,15 @@ void LedOn(unsigned char ucLedIndeks)
 	}
 }	
 
-int ReadButton1(void)
+enum ButtonState ReadButton1(void)
 {
 	if((IO0PIN & BUT0_bm) == 0)
 	{
-		return 1;
+		return PRESSED;
 	}
 	else
 	{
-	return 0;
+	return RELEASED;
 	}
 }
 	
@@ -60,13 +61,14 @@ int main()
 	
 	while(1)
 	{
-		if (ReadButton1() == 1)
+		switch(ReadButton1())
 		{
-			LedOn(1);
-		}
-		else
-		{
-			LedOn(0);
+			case PRESSED:
+				LedOn(1);
+				break;
+			case RELEASED:
+				LedOn(0);
+				break;
 		}
 	}
 }
