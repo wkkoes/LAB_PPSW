@@ -8,6 +8,7 @@
 #define BUT2_bm 0x0000000020
 #define BUT3_bm 0x0000000080
 enum KeyboardState {RELEASED, BUTTON_0, BUTTON_1, BUTTON_2, BUTTON_3};
+enum StepDirection {LEFT, RIGHT};
 unsigned int uiLedIndex = 0;
 
 void Delay(int iDelayInMs)
@@ -76,27 +77,39 @@ void KeyboardInit()
 	IO0DIR &= ~(BUT0_bm|BUT1_bm|BUT2_bm|BUT3_bm);
 }
 
-void StepLeft(void)
+void LedStep(enum StepDirection eDirection)
 {
-	uiLedIndex++;
-	LedOn(uiLedIndex % 4);
-}
-
-void StepRight(void)
-{
-	uiLedIndex--;
+	switch(eDirection)
+	{
+		case LEFT:
+			uiLedIndex++;
+			break;
+		case RIGHT:
+			uiLedIndex--;
+			break;
+	}
 	LedOn(uiLedIndex % 4);
 }
 
 int main()
 {
+	int iLedCounter;
 	LedInit();
-	
+
 	while(1)
 	{
-		Delay(250);
-		StepRight();
+		for(iLedCounter = 0; iLedCounter < 9; iLedCounter++)
+		{
+			Delay(250);
+			LedStep(RIGHT);
+		}
+		for(iLedCounter = 0; iLedCounter <9; iLedCounter++)
+		{
+			Delay(250);
+			LedStep(LEFT);
+		}
 	}
 }
+		
 		
 
