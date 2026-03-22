@@ -3,7 +3,10 @@
 #define LED1_bm 0x00020000
 #define LED2_bm 0x00040000
 #define LED3_bm 0x00080000
-#define BUT0_bm 0x00000010
+#define BUT0_bm 0x0000000010
+#define BUT1_bm 0x0000000040
+#define BUT2_bm 0x0000000020
+#define BUT3_bm 0x0000000080
 enum ButtonState {RELEASED, PRESSED};
 
 void Delay(int iDelayInMs)
@@ -54,10 +57,16 @@ enum ButtonState ReadButton1(void)
 	return RELEASED;
 	}
 }
-	
+
+void KeyboardInit()
+{
+	IO0DIR &= ~(BUT0_bm|BUT1_bm|BUT2_bm|BUT3_bm);
+}
+
 int main()
 {
 	LedInit();
+	KeyboardInit();
 	
 	while(1)
 	{
