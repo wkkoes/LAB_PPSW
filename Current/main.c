@@ -10,28 +10,50 @@ void Delay(int iDelayInMs)
     for(iLoopCounter = 0; iLoopCounter < iDelayInMs; iLoopCounter++){}
 }
 
-enum LedState{LED_LEFT, LED_RIGHT};
+enum LedState{STATE0, STATE1, STATE2, STATE3, STATE4, STATE5};
 
 int main()
 {
 	LedInit();
-	enum LedState eLedState = LED_LEFT;
+	enum LedState eLedState = STATE3;
 	
 	while(1)
 	{
 		switch(eLedState)
 		{
-			case LED_LEFT:
-			LedStepLeft();
-			eLedState = LED_RIGHT;
+			case STATE0:
+			LedStepRight();
+			eLedState = STATE1;
 			break;
 			
-			case LED_RIGHT:
+			case STATE1:
 			LedStepRight();
-			eLedState = LED_LEFT;
+			eLedState = STATE2;
 			break;
-		}		
+			
+			case STATE2:
+			LedStepRight();
+			eLedState = STATE3;
+			break;
+			
+			case STATE3:
+			LedStepLeft();
+			eLedState = STATE4;
+			break;
+			
+			case STATE4:
+			LedStepLeft();
+			eLedState = STATE5;
+			break;
+			
+			case STATE5:
+			LedStepLeft();
+			eLedState = STATE0;
+			break;
+		}
 		Delay(250);
 	}
 }
-
+				
+	
+	
