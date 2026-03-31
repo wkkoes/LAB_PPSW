@@ -13,19 +13,19 @@ void KeyboardInit()
 
 enum KeyboardState eKeyboardRead()
 {
-	if((IO0PIN & BUT0_bm) == 0)
+	if((IO0PIN & BUT0_bm) == 0) //wcisniety - 0x0000, puszczony 0x0010
 	{
 		return BUTTON_0;
 	}
-	else if ((IO0PIN & BUT1_bm) == 0)
+	else if ((IO0PIN & BUT1_bm) == 0) //wcisniety - 0x0000, puszczony 0x0040
 	{
 		return BUTTON_1;
 	}
-	else if ((IO0PIN & BUT2_bm) == 0)
+	else if ((IO0PIN & BUT2_bm) == 0) //wcisniety - 0x0000, puszczony 0x0020
 	{
 		return BUTTON_2;
 	}
-	else if ((IO0PIN & BUT3_bm) == 0)
+	else if ((IO0PIN & BUT3_bm) == 0) //wcisniety - 0x0000, puszczony 0x0080
 	{
 		return BUTTON_3;
 	}
