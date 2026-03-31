@@ -10,42 +10,51 @@ void Delay(int iDelayInMs)
     for(iLoopCounter = 0; iLoopCounter < iDelayInMs; iLoopCounter++){}
 }
 
-enum LedState{STATE_LEFT, STATE_RIGHT};
+enum LedState{STATE_IDLE, STATE_RIGHT};
 unsigned char ucStepCounter = 0;
 
 int main()
 {
 	LedInit();
-	enum LedState eLedState = STATE_LEFT;
+	KeyboardInit();
+	enum LedState eLedState = STATE_RIGHT;
 	
 	while(1)
 	{
 		switch(eLedState)
 		{
-			case STATE_LEFT:
-			LedStepLeft();
-			ucStepCounter++;
-			if(ucStepCounter >= 3)
+			case STATE_IDLE:
+			if(eKeyboardRead() == BUTTON_0)
 			{
 				eLedState = STATE_RIGHT;
-				ucStepCounter = 0;
+			}
+			else
+			{
+				eLedState = STATE_IDLE;
 			}
 			break;
 			
 			case STATE_RIGHT:
-			LedStepRight();
-			ucStepCounter++;
-			if(ucStepCounter >=3)
+			if(ucStepCounter < 2)
 			{
-				eLedState = STATE_LEFT;
+				LedStepRight();
+				ucStepCounter++;
+				eLedState = STATE_RIGHT;
+			}
+			else
+			{
+				LedStepRight();
 				ucStepCounter = 0;
+				eLedState = STATE_IDLE;
 			}
 			break;
 		}
 		Delay(250);
 	}
 }
-				
+			
+			
+			
 			
 		
 	
