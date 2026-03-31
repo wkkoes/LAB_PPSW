@@ -10,30 +10,28 @@ void Delay(int iDelayInMs)
     for(iLoopCounter = 0; iLoopCounter < iDelayInMs; iLoopCounter++){}
 }
 
+enum LedState{LED_LEFT, LED_RIGHT};
+
 int main()
 {
 	LedInit();
-	KeyboardInit();
+	enum LedState eLedState = LED_LEFT;
 	
 	while(1)
 	{
-		switch(eKeyboardRead())
+		switch(eLedState)
 		{
-			case BUTTON_1:
-				LedStepRight();
-				Delay(250);
-				break;
+			case LED_LEFT:
+			LedStepLeft();
+			eLedState = LED_RIGHT;
+			break;
 			
-			case BUTTON_2:
-				LedStepLeft();
-				Delay(250);
-				break;
-			
-			case RELEASED:
-				break;
-			
-			default:
-				break;
-		}
+			case LED_RIGHT:
+			LedStepRight();
+			eLedState = LED_LEFT;
+			break;
+		}		
+		Delay(250);
 	}
 }
+
