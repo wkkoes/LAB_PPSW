@@ -6,7 +6,16 @@
 
 enum DetectorState {ACTIVE, INACTIVE};
 enum ServoState {CALLIB, IDLE, IN_PROGRESS};
-enum ServoState eServoState = CALLIB;
+
+struct Servo
+{
+	enum ServoState eState;
+	unsigned int uiCurrentPosition;
+	unsigned int uiDesiredPosition;
+};
+
+struct Servo sServo = {CALLIB, 0, 0};
+
 
 
 void DetectorInit()
@@ -28,47 +37,81 @@ enum DetectorState eReadDetector()
 
 void Automat(void)
 {
+	switch(sServo.eState)
+	{
+		case CALLIB:
+			if(eReadDetector() == INACTIVE)
+			{
+				LedStepLeft();
+			}
+			else
+			{
+				sServo.eState = IDLE;
+				sServo.uiCurrentPosition = 0; 
+				sServo.uiDesiredPosition = 0;
+			}
+			break;
+		
+		case IDLE:
+			if(sServo.uiCurrentPosition != sServo.uiDesiredPosition)
+			{
+				sServo.eState = IN_PROGRESS;
+			}
+			break;
+			
+		case IN_PROGRESS:
+			if(sServo.uiCurrentPosition < sServo.uiDesiredPosition)
+			{
+				LedStepRight();
+				sServo.uiCurrentPosition++;
+			}
+			else if(sServo.uiCurrentPosition > sServo.uiDesiredPosition)
+			{
+				LedStepLeft();
+				sServo.uiCurrentPosition--;
+			}
+			else
+			{
+				sServo.eState = IDLE;
+			}
+			break;
+		}
+	}
+			
+				
+			
   
-    enum LedState{CALLIB, STATE_LEFT, STATE_STOP, STATE_RIGHT}; 
-    static enum LedState eLedState = CALLIB; 
     
-    switch(eLedState)
-    {
-        case CALLIB:
-            if(eReadDetector() == INACTIVE) {
-                LedStepLeft(); 
-            } else {
-                eLedState = STATE_STOP; 
-            }
-            break;
-
-        case STATE_STOP:
-            if(eKeyboardRead() == BUTTON_0) eLedState = STATE_LEFT;
-            else if(eKeyboardRead() == BUTTON_2) eLedState = STATE_RIGHT;
-            break;
-            
-        case STATE_LEFT:
-            if(eKeyboardRead() == BUTTON_1) eLedState = STATE_STOP;
-            else LedStepLeft();
-            break;
-            
-        case STATE_RIGHT:
-            if(eKeyboardRead() == BUTTON_1) eLedState = STATE_STOP;
-            else LedStepRight();
-            break;
-    }
-}
  int main()
  {
 	 LedInit();
 	 DetectorInit();
 	 KeyboardInit();
-	 Timer0Interrupts_Init(6000, &Automat);
+	 
+	 Timer0Interrupts_Init(20000, &Automat);
+	 
 	 while(1)
 	 {
-		 
+		 switch(eKeyboardRead())
+		 {
+			 case BUTTON_0:
+				 sServo.eState = CALLIB;
+				 break;
+			 
+			 case BUTTON_1:
+				 sServo.uiDesiredPosition = 12;
+				 break;
+			 case BUTTON_2:
+				 sServo.uiDesiredPosition = 24;
+				 break;
+			 case BUTTON_3:
+				 sServo.uiDesiredPosition = 150;
+				 break;
+			 default:
+				 break; 
 	 }
  }
+}
 	 
 		
 			
