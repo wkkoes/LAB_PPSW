@@ -78,35 +78,51 @@ void Automat(void)
 		}
 	}
 			
-				
-			
+void ServoInit(unsigned int uiServoFrequency)
+{
+		unsigned int uiServoPeroid = 1000000 / uiServoFrequency;
+		sServo.eState = CALLIB;
+		LedInit();
+		DetectorInit();
+		Timer0Interrupts_Init(uiServoPeroid, &Automat);
+}
+	
+void ServoCallib()
+{
+		sServo.eState = CALLIB;
+}
+
+void ServoGoTo(unsigned int uiPosition)
+{
+	sServo.uiDesiredPosition = uiPosition;
+}
   
     
  int main()
  {
-	 LedInit();
-	 DetectorInit();
 	 KeyboardInit();
-	 
-	 Timer0Interrupts_Init(20000, &Automat);
+	 ServoInit(200);
 	 
 	 while(1)
 	 {
 		 switch(eKeyboardRead())
 		 {
 			 case BUTTON_0:
-				 sServo.eState = CALLIB;
+				 ServoCallib();
 				 break;
 			 
 			 case BUTTON_1:
-				 sServo.uiDesiredPosition = 12;
+				 ServoGoTo(12);
 				 break;
+			 
 			 case BUTTON_2:
-				 sServo.uiDesiredPosition = 24;
+				 ServoGoTo(24);
 				 break;
+			 
 			 case BUTTON_3:
-				 sServo.uiDesiredPosition = 150;
+				 ServoGoTo(36);
 				 break;
+			
 			 default:
 				 break; 
 	 }
