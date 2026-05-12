@@ -36,7 +36,7 @@ void Timer0Interrupts_Init(unsigned int uiPeriod, void(*ptrInterruptFunction)(vo
 
 	VICIntEnable |= (0x1 << VIC_TIMER0_CHANNEL_NR);            // Enable Timer 0 interrupt channel 
 	VICVectCntl0  = mIRQ_SLOT_ENABLE | VIC_TIMER0_CHANNEL_NR;  // Enable Slot 0 and assign it to Timer 0 interrupt channel
-	VICVectAddr0  =(unsigned long)Timer0IRQHandler; 	   // Set to Slot 0 Address of Interrupt Service Routine 
+	VICVectAddr0  =(unsigned long)Timer0IRQHandler; 	   			 // Set to Slot 0 Address of Interrupt Service Routine 
 
         // match module
 
