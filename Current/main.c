@@ -5,7 +5,8 @@ int main(void)
 {
     KeyboardInit();
     ServoInit(200); // 200 Hz 
-
+		ServoGoTo(24);
+		ServoGoTo(12);
     while(1) 
     {
         switch(eKeyboardRead()) 
