@@ -1,11 +1,12 @@
 #include "servo.h"
 #include "keyboard.h"
-
+//git test
 int main(void) 
 {
     KeyboardInit();
-    ServoInit(200); // 200 Hz 
-		ServoGoTo(24);
+    ServoInit(200); 
+		
+	ServoGoTo(24);
 		ServoGoTo(12);
     while(1) 
     {
