@@ -1,29 +1,48 @@
 #include "servo.h"
 #include "keyboard.h"
+#include "led.h"
+#include "uart.h"
 
-int main(void) 
+extern char cOdebranyZnak;
+
+int main(void)
 {
-    KeyboardInit();
-    ServoInit(200); // 200 Hz 
-
-    while(1) 
-    {
-        switch(eKeyboardRead()) 
-        {
-            case BUTTON_0:
-                ServoCallib();
-                break;
-            case BUTTON_1:
-                ServoGoTo(48);
-                break;
-            case BUTTON_2:
-                ServoGoTo(150);
-                break;
-            case BUTTON_3:
-                ServoGoTo(500);
-                break;
-            default:
-                break;
-        }
-    }
+	
+	UART_InitWithInt(9600);
+	LedInit();
+	
+	while(1)
+	{
+		switch(cOdebranyZnak)
+		{
+			case '1':
+				LedOn(0);
+				cOdebranyZnak = 0;
+				break;
+			
+			case '2':
+				LedOn(1);
+				cOdebranyZnak = 0;
+				break;
+			
+			case '3':
+				LedOn(2);
+				cOdebranyZnak = 0;
+				break;
+			
+			case '4':
+				LedOn(3);
+				cOdebranyZnak = 0;
+				break;
+			
+			case 'c':
+			case 'C':
+				LedOn(5);
+				cOdebranyZnak = 0;
+				break;
+			
+			default:
+				break;
+		}
+	}
 }
