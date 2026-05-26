@@ -2,6 +2,7 @@
 #include "keyboard.h"
 #include "led.h"
 #include "uart.h"
+#include "servo.h"
 
 extern char cOdebranyZnak;
 
@@ -10,34 +11,35 @@ int main(void)
 	
 	UART_InitWithInt(9600);
 	LedInit();
+	ServoInit(150);
 	
 	while(1)
 	{
 		switch(cOdebranyZnak)
 		{
 			case '1':
-				LedOn(0);
+				ServoGoTo(90);
 				cOdebranyZnak = 0;
 				break;
 			
 			case '2':
-				LedOn(1);
+				ServoGoTo(180);
 				cOdebranyZnak = 0;
 				break;
 			
 			case '3':
-				LedOn(2);
+				ServoGoTo(270);
 				cOdebranyZnak = 0;
 				break;
 			
 			case '4':
-				LedOn(3);
+				ServoGoTo(600);
 				cOdebranyZnak = 0;
 				break;
 			
 			case 'c':
 			case 'C':
-				LedOn(4);
+				ServoCallib();
 				cOdebranyZnak = 0;
 				break;
 			
