@@ -37,7 +37,7 @@ int main(void)
 			
 			case 'c':
 			case 'C':
-				LedOn(5);
+				LedOn(4);
 				cOdebranyZnak = 0;
 				break;
 			
