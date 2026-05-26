@@ -1,5 +1,5 @@
 #include <LPC210X.H>
-
+#include "uart.h"
 /************ UART ************/
 // U0LCR Line Control Register
 #define mDIVISOR_LATCH_ACCES_BIT                   0x00000080
@@ -22,15 +22,13 @@
 // VICVectCntlx Vector Control Registers
 #define mIRQ_SLOT_ENABLE  0x00000020
 
-#define RECEIVER_SIZE 10
-#define TERMINATOR '\r'
 
 void Receiver_PutCharacterToBuffer(char cCharacter);
 
 ////////////// Zmienne globalne ////////////
 char cOdebranyZnak;
 
-enum eReceiverStatus {EMPTY, READY, OVERFLOW};
+//enum eReceiverStatus {EMPTY, READY, OVERFLOW};
 
 struct ReceiverBuffer
 {
@@ -129,6 +127,7 @@ void Receiver_GetStringCopy(char *ucDestination)
 	ucDestination[ucCopyCtr] = '\0';
 	sRxBuffer.eStatus = EMPTY;
 }
+
 
 
 			

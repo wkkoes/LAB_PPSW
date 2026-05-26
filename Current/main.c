@@ -2,7 +2,10 @@
 
 #include "servo.h"
 #include "uart.h"
-
+#include "command_decoder.h"
+#include "timer_interrupts.h"
+#include "keyboard.h"
+#include "string.h"
 
 int main(void)
 {
@@ -15,30 +18,27 @@ int main(void)
     {
         if (eReceiver_GetStatus() == READY) 
         {
-            
             Receiver_GetStringCopy(cOdebranaKomenda);
+            DecodeMsg(cOdebranaKomenda);
             
-            
-            if (cOdebranaKomenda[0] == 'c' && cOdebranaKomenda[1] == 'a' && 
-                cOdebranaKomenda[2] == 'l' && cOdebranaKomenda[3] == 'l' && 
-                cOdebranaKomenda[4] == 'i' && cOdebranaKomenda[5] == 'b' && 
-                cOdebranaKomenda[6] == '\0') 
+            if (ucTokenNr > 0 && asToken[0].eType == KEYWORD) 
             {
-                ServoCallib();
-            }
-            
-            else if (cOdebranaKomenda[0] == 'l' && cOdebranaKomenda[1] == 'e' && 
-                     cOdebranaKomenda[2] == 'f' && cOdebranaKomenda[3] == 't' && 
-                     cOdebranaKomenda[4] == '\0') 
-            {
-                ServoGoTo(50);
-            }
-            
-            else if (cOdebranaKomenda[0] == 'r' && cOdebranaKomenda[1] == 'i' && 
-                     cOdebranaKomenda[2] == 'g' && cOdebranaKomenda[3] == 'h' && 
-                     cOdebranaKomenda[4] == 't' && cOdebranaKomenda[5] == '\0') 
-            {
-                ServoGoTo(150);
+                switch (asToken[0].uValue.eKeyword) 
+                {
+                    case CAL:
+                        ServoCallib();
+                        break;
+                        
+                    case GT:
+                        if (ucTokenNr > 1 && asToken[1].eType == NUMBER) 
+                        {
+                            ServoGoTo(asToken[1].uValue.uiNumber);
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
             }
         }
     }
