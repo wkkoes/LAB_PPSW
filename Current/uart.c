@@ -22,8 +22,10 @@
 // VICVectCntlx Vector Control Registers
 #define mIRQ_SLOT_ENABLE  0x00000020
 
-#define RECEIVER_SIZE 4
+#define RECEIVER_SIZE 10
 #define TERMINATOR '\r'
+
+void Receiver_PutCharacterToBuffer(char cCharacter);
 
 ////////////// Zmienne globalne ////////////
 char cOdebranyZnak;
@@ -46,7 +48,7 @@ __irq void UART0_Interrupt (void) {
 
    if ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mRX_DATA_AVALIABLE_INTERRUPT_PENDING) // odebrano znak
    {
-      cOdebranyZnak = U0RBR;
+      Receiver_PutCharacterToBuffer(U0RBR);
    } 
    
    if ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mTHRE_INTERRUPT_PENDING)              // wyslano znak - nadajnik pusty 

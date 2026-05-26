@@ -1,28 +1,45 @@
-#include "servo.h"
-#include "keyboard.h"
-#include "led.h"
-#include "uart.h"
-#include "servo.h"
-#define RECEIVER_SIZE 4
+#include <LPC21xx.H>
 
-extern char cOdebranyZnak;
+#include "servo.h"
+#include "uart.h"
+
 
 int main(void)
 {
-	char cTest[10];
+    char cOdebranaKomenda[RECEIVER_SIZE]; 
 	
-	Receiver_PutCharacterToBuffer('k');
-  Receiver_PutCharacterToBuffer('o');
-  Receiver_PutCharacterToBuffer('d');
- 	Receiver_PutCharacterToBuffer(TERMINATOR);
+    UART_InitWithInt(9600);
+    ServoInit(150);
 	
-	Receiver_GetStringCopy(cTest);
-
-  Receiver_PutCharacterToBuffer('k');
-  Receiver_PutCharacterToBuffer('o');
-  Receiver_PutCharacterToBuffer('d');
-  Receiver_PutCharacterToBuffer('1');
-  Receiver_PutCharacterToBuffer(TERMINATOR);
-	
-	while(1){}
+    while(1)
+    {
+        if (eReceiver_GetStatus() == READY) 
+        {
+            
+            Receiver_GetStringCopy(cOdebranaKomenda);
+            
+            
+            if (cOdebranaKomenda[0] == 'c' && cOdebranaKomenda[1] == 'a' && 
+                cOdebranaKomenda[2] == 'l' && cOdebranaKomenda[3] == 'l' && 
+                cOdebranaKomenda[4] == 'i' && cOdebranaKomenda[5] == 'b' && 
+                cOdebranaKomenda[6] == '\0') 
+            {
+                ServoCallib();
+            }
+            
+            else if (cOdebranaKomenda[0] == 'l' && cOdebranaKomenda[1] == 'e' && 
+                     cOdebranaKomenda[2] == 'f' && cOdebranaKomenda[3] == 't' && 
+                     cOdebranaKomenda[4] == '\0') 
+            {
+                ServoGoTo(50);
+            }
+            
+            else if (cOdebranaKomenda[0] == 'r' && cOdebranaKomenda[1] == 'i' && 
+                     cOdebranaKomenda[2] == 'g' && cOdebranaKomenda[3] == 'h' && 
+                     cOdebranaKomenda[4] == 't' && cOdebranaKomenda[5] == '\0') 
+            {
+                ServoGoTo(150);
+            }
+        }
+    }
 }
