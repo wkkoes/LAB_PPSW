@@ -8,38 +8,26 @@ extern char cOdebranyZnak;
 
 int main(void)
 {
+	unsigned int uiZadanaPozycja = 0;
 	
 	UART_InitWithInt(9600);
 	LedInit();
-	ServoInit(150);
+	ServoInit(155);
 	
 	while(1)
 	{
 		switch(cOdebranyZnak)
 		{
 			case '1':
-				ServoGoTo(90);
-				cOdebranyZnak = 0;
-				break;
-			
-			case '2':
-				ServoGoTo(180);
-				cOdebranyZnak = 0;
-				break;
-			
-			case '3':
-				ServoGoTo(270);
-				cOdebranyZnak = 0;
-				break;
-			
-			case '4':
-				ServoGoTo(600);
+				uiZadanaPozycja = uiZadanaPozycja + 50;
+				ServoGoTo(uiZadanaPozycja);
 				cOdebranyZnak = 0;
 				break;
 			
 			case 'c':
 			case 'C':
 				ServoCallib();
+				uiZadanaPozycja  = 0;
 				cOdebranyZnak = 0;
 				break;
 			

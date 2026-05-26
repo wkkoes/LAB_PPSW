@@ -20,10 +20,24 @@
 #define VIC_UART1_CHANNEL_NR  7
 
 // VICVectCntlx Vector Control Registers
-#define mIRQ_SLOT_ENABLE                           0x00000020
+#define mIRQ_SLOT_ENABLE  0x00000020
+
+#define RECEIVER_SIZE 4
+#define TERMINATOR '\r'
 
 ////////////// Zmienne globalne ////////////
 char cOdebranyZnak;
+
+enum eReceiverStatus {EMPTY, READY, OVERFLOW};
+
+struct ReceiverBuffer
+{
+	char cData[RECEIVER_SIZE];
+	unsigned char ucCharCtr;
+	enum eReceiverStatus eStatus;
+};
+
+struct ReceiverBuffer sRxBuffer;
 
 ///////////////////////////////////////////
 __irq void UART0_Interrupt (void) {
@@ -62,3 +76,61 @@ void UART_InitWithInt(unsigned int uiBaudRate){
    VICVectCntl1  = mIRQ_SLOT_ENABLE | VIC_UART0_CHANNEL_NR;     // use it for UART 0 Interrupt
    VICIntEnable |= (0x1 << VIC_UART0_CHANNEL_NR);               // Enable UART 0 Interrupt Channel
 }
+
+void Receiver_PutCharacterToBuffer(char cCharacter)
+{
+	switch (sRxBuffer.eStatus)
+	{
+		case EMPTY:
+		if(cCharacter == TERMINATOR)
+			{
+				sRxBuffer.cData[sRxBuffer.ucCharCtr] = '\0';
+				sRxBuffer.eStatus = READY;
+				sRxBuffer.ucCharCtr = 0;
+			}
+			
+			else if(sRxBuffer.ucCharCtr < (RECEIVER_SIZE - 1))
+			{
+				sRxBuffer.cData[sRxBuffer.ucCharCtr] = cCharacter;
+				sRxBuffer.ucCharCtr = sRxBuffer.ucCharCtr + 1;
+			}
+			
+			else
+			{
+				sRxBuffer.eStatus = OVERFLOW;
+			}
+			
+			break;
+			
+		case READY:
+			break;
+		
+		case OVERFLOW:
+			break;
+	}
+}
+
+enum eReceiverStatus eReceiver_GetStatus(void)
+{
+	return sRxBuffer.eStatus;
+}
+
+void Receiver_GetStringCopy(char *ucDestination)
+{
+	unsigned char ucCopyCtr = 0;
+	while(sRxBuffer.cData[ucCopyCtr] != '\0')
+	{
+		ucDestination[ucCopyCtr] = sRxBuffer.cData[ucCopyCtr];
+		ucCopyCtr = ucCopyCtr + 1;
+	}
+	
+	ucDestination[ucCopyCtr] = '\0';
+	sRxBuffer.eStatus = EMPTY;
+}
+
+
+			
+				
+				
+				
+			

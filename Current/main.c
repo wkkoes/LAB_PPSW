@@ -3,36 +3,26 @@
 #include "led.h"
 #include "uart.h"
 #include "servo.h"
+#define RECEIVER_SIZE 4
 
 extern char cOdebranyZnak;
 
 int main(void)
 {
-	unsigned int uiZadanaPozycja = 0;
+	char cTest[10];
 	
-	UART_InitWithInt(9600);
-	LedInit();
-	ServoInit(155);
+	Receiver_PutCharacterToBuffer('k');
+  Receiver_PutCharacterToBuffer('o');
+  Receiver_PutCharacterToBuffer('d');
+ 	Receiver_PutCharacterToBuffer(TERMINATOR);
 	
-	while(1)
-	{
-		switch(cOdebranyZnak)
-		{
-			case '1':
-				uiZadanaPozycja = uiZadanaPozycja + 50;
-				ServoGoTo(uiZadanaPozycja);
-				cOdebranyZnak = 0;
-				break;
-			
-			case 'c':
-			case 'C':
-				ServoCallib();
-				uiZadanaPozycja  = 0;
-				cOdebranyZnak = 0;
-				break;
-			
-			default:
-				break;
-		}
-	}
+	Receiver_GetStringCopy(cTest);
+
+  Receiver_PutCharacterToBuffer('k');
+  Receiver_PutCharacterToBuffer('o');
+  Receiver_PutCharacterToBuffer('d');
+  Receiver_PutCharacterToBuffer('1');
+  Receiver_PutCharacterToBuffer(TERMINATOR);
+	
+	while(1){}
 }
