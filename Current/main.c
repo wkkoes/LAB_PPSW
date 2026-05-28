@@ -9,37 +9,10 @@
 
 int main(void)
 {
-    char cOdebranaKomenda[RECEIVER_SIZE]; 
-	
     UART_InitWithInt(9600);
-    ServoInit(150);
+    
+		U0THR = 0;
 	
-    while(1)
-    {
-        if (eReceiver_GetStatus() == READY) 
-        {
-            Receiver_GetStringCopy(cOdebranaKomenda);
-            DecodeMsg(cOdebranaKomenda);
-            
-            if (ucTokenNr > 0 && asToken[0].eType == KEYWORD) 
-            {
-                switch (asToken[0].uValue.eKeyword) 
-                {
-                    case CAL:
-                        ServoCallib();
-                        break;
-                        
-                    case GT:
-                        if (ucTokenNr > 1 && asToken[1].eType == NUMBER) 
-                        {
-                            ServoGoTo(asToken[1].uValue.uiNumber);
-                        }
-                        break;
-                        
-                    default:
-                        break;
-                }
-            }
-        }
-    }
+		while(1){}
+
 }
