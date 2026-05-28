@@ -10,8 +10,7 @@
 int main(void)
 {
     UART_InitWithInt(9600);
-    
-		U0THR = 0;
+		Transmiter_SendString("test123");
 	
 		while(1){}
 
