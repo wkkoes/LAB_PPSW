@@ -9,18 +9,20 @@
 
 int main(void)
 {
+		unsigned int uiCounter = 0;
+		char cMsg[30];
+	
     UART_InitWithInt(9600);
 	
 		while(1)
 		{
-			switch(Transmiter_GetStatus())
+			if(Transmiter_GetStatus() == FREE)
 			{
-				case FREE:
-					Transmiter_SendString("test123");
-					break;
-				
-				case BUSY:
-					break;
+				CopyString("licznik 0x", cMsg);
+				AppendUIntToString(uiCounter, cMsg);
+				Transmiter_SendString(cMsg);
+				uiCounter++;
 			}
 		}
 }
+		
