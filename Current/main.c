@@ -10,8 +10,17 @@
 int main(void)
 {
     UART_InitWithInt(9600);
-		Transmiter_SendString("test123");
 	
-		while(1){}
-
+		while(1)
+		{
+			switch(Transmiter_GetStatus())
+			{
+				case FREE:
+					Transmiter_SendString("test123");
+					break;
+				
+				case BUSY:
+					break;
+			}
+		}
 }
